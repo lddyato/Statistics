@@ -136,6 +136,19 @@ plot(denmt) #dendrogram is the one displayed at the side of the heat map
  + An assignment of each point to clusters
  
 ```r
+#Set k=3
+> cmat #stored 3 positions of centroids for each cluster in a 2 by 3 matrix cmat.
+     [,1] [,2] [,3]
+[1,]    1  1.8  2.5
+[2,]    2  1.0  1.5
+points(cx, cy, col=c("red", "orange", "purple"), pch=3, cex=2, lwd=2)
+#The distance between each point and one centroid means 12 distances have to be calculated for each centroid. This has to be done for all 3 centroids.
+
+
+
+
+ 
+```r
 set.seed(1234)
 par(mar = c(0, 0, 0, 0))
 x <- rnorm(12, mean = rep(1:3, each = 4), sd = 0.2)
@@ -145,8 +158,30 @@ text(x + 0.05, y + 0.05, labels = as.character(1:12))
 # K-means clustering - starting centroids
 dataFrame <- data.frame(x, y)
 kmeansObj <- kmeans(dataFrame, centers = 3)
+kmeansObj
+K-means clustering with 3 clusters of sizes 4, 4, 4
+
+#Cluster means:
+#          x         y
+#1 2.8534966 0.9831222
+#2 0.8904553 1.0068707
+#3 1.9906904 2.0078229
+
+#Clustering vector:
+# [1] 2 2 2 2 3 3 3 3 1 1 1 1
+
+#Within cluster sum of squares by cluster:
+#[1] 0.03298027 0.34188313 0.34732441
+# (between_SS / total_SS =  93.6 %)
+
+#Available components:
+
+#[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+#[6] "betweenss"    "size"         "iter"         "ifault"      
+
 names(kmeansObj)
 kmeansObj$cluster
+kmeansObj$iter  # how many iterations the algorithm went through
 par(mar = rep(0.2, 4))
 plot(x, y, col = kmeansObj$cluster, pch = 19, cex = 2)
 points(kmeansObj$centers, col = 1:3, pch = 3, cex = 3, lwd = 3)
