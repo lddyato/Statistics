@@ -44,9 +44,13 @@ plot(x, y, col = "blue", pch = 19, cex = 2)
 text(x + 0.05, y + 0.05, labels = as.character(1:12))
 # Hierarchical clustering - dist
 dataFrame <- data.frame(x = x, y = y)
-dist(dataFrame) #lower triangular matrix
-hClustering <- hclust(distxy, method="complete") #merge points: single、complete、median、average, Ward
+dist(dataFrame) #lower triangular matrix，By default dist uses Euclidean distance as its metric,
+hClustering <- hclust(distxy, method="complete") #merge points: single、complete（default）、median、average, Ward
 plot(hClustering)
+plot(as.dendrogram(hClustering))# The essentials are the same, but the labels are missing and the leaves (original points) are all printed at the same level.
+abline(h=1.5, col="blue") #3clusters
+abline(h=0.4, col="red")#5clusters
+abline(h=0.05, col="green")#12clusters
 ```
 **Prettier dendrograms**
 ```r
@@ -78,11 +82,31 @@ myplclust(hClustering, lab = rep(1:3, each = 4), lab.col = rep(1:3, each = 4))
 ```
 
 **heatmap(): Runs a hierarchical cluster analysis on the rows of the table and on the columns of the table.**
+Larger values were represented by small dark gray or black squares (pixels) and smaller values by lighter squares.
+<http://sebastianraschka.com/Articles/heatmaps_in_r.html#clustering>
 ```r
 dataFrame <- data.frame(x = x, y = y)
 set.seed(143)
 dataMatrix <- as.matrix(dataFrame)[sample(1:12), ]
 heatmap(dataMatrix) 
+heatmap(dataMatrix,col=cm.colors(25))
+------------------
+#dataset mtcars
+heatmap(mt)
+mt
+#                  mpg cyl  disp  hp drat    wt
+#Dodge Challenger 15.5   8 318.0 150 2.76 3.520
+#AMC Javelin      15.2   8 304.0 150 3.15 3.435
+#Camaro Z28       13.3   8 350.0 245 3.73 3.840
+#Pontiac Firebird 19.2   8 400.0 175 3.08 3.845
+#Fiat X1-9        27.3   4  79.0  66 4.08 1.935
+#Porsche 914-2    26.0   4 120.3  91 4.43 2.140
+#Lotus Europa     30.4   4  95.1 113 3.77 1.513
+#Ford Pantera L   15.8   8 351.0 264 4.22 3.170
+#Maserati Bora    15.0   8 301.0 335 3.54 3.570
+#Volvo 142E       21.4   4 121.0 109 4.11 2.780
+
+plot(denmt) #dendrogram is the one displayed at the side of the heat map
 ```
 **Notes and further sources**
 * Gives an idea of the relationships between variables/observ
