@@ -40,7 +40,6 @@ dataMatrixOrdered <- dataMatrix[hh$order, ]
 > svd1$d
  [1] 12.458121  7.779798  6.732595  6.301878  5.860013  4.501826  3.921267  2.973909
  [9]  2.401470  2.152848
-
 par(mfrow = c(1, 3))
 image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1])
 plot(rowMeans(dataMatrixOrdered), 40:1, , xlab = "Row Mean", ylab = "Row", pch = 19)
@@ -49,7 +48,30 @@ plot(colMeans(dataMatrixOrdered), xlab = "Column", ylab = "Column Mean", pch = 1
  rows are shown in the same order as the rows of the heat matrix on the left. The
  rightmost display shows the mean of each of the 10 columns. Here the column
  numbers are along the x-axis and their means along the y.
- 
+#Components of the SVD - u and v
+> svd1 <- svd(dataMatrix)
+> svd1$v[,1]
+ [1] -0.01269600  0.11959541  0.03336723  0.09405542 -0.12201820 -0.43175437
+ [7] -0.44120227 -0.43732624 -0.44207248 -0.43924243
+> svd1$d
+ [1] 12.458121  7.779798  6.732595  6.301878  5.860013  4.501826  3.921267  2.973909
+ [9]  2.401470  2.152848
+par(mfrow = c(1, 3))
+image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1])
+plot(svd1$u[, 1], 40:1, , xlab = "Row", ylab = "First left singular vector",
+pch = 19)
+plot(svd1$v[, 1], xlab = "Column", ylab = "First right singular vector", pch = 19)
+#Components of the SVD - Variance explained
+par(mfrow = c(1, 2))
+plot(svd1$d, xlab = "Column", ylab = "Singular value", pch = 19)
+plot(svd1$d^2/sum(svd1$d^2), xlab = "Column", ylab = "Prop. of variance explained",
+pch = 19)
+#Relationship to pricipal components
+svd1 <- svd(scale(dataMatrixOrdered))
+pca1 <- prcomp(dataMatrixOrdered, scale = TRUE)
+plot(pca1$rotation[, 1], svd1$v[, 1], pch = 19, xlab = "Principal Component 1",
+ylab = "Right Singular Vector 1")
+abline(c(0, 1))
 ```
 Related Problems
 You have multivariate variables X1, … , Xn, so X1 = (X11, … , X1m)
@@ -125,9 +147,9 @@ Rotation:
 [2,] 0.5773503  0.7886751
 [3,] 0.5773503 -0.2113249
 #Notice that the principal components of the scaled matrix, shown in the Rotation
- component of the prcomp output, ARE the columns of V, the right singular values.
- Thus, PCA of a scaled matrix yields the V matrix (right singular vectors) of the
- same scaled matrix.
+#component of the prcomp output, ARE the columns of V, the right singular values.
+#Thus, PCA of a scaled matrix yields the V matrix (right singular vectors) of the
+#same scaled matrix.
 ```
 ```r
 > head(constantMatrix) # 40 by 10 matrix
