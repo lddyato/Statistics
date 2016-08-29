@@ -259,7 +259,7 @@ image(t(faceData)[, nrow(faceData):1], main = "(d)") ## Original data
 
 
 
-
+## Example
 
 
 
